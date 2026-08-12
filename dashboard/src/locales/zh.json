@@ -137,7 +137,17 @@
     "KNOWLEDGE_DOC_TOO_LARGE": "文档超过 20 MB 大小限制。",
     "KNOWLEDGE_BASE_LIMIT": "每个用户最多可创建 20 个知识库。",
     "KNOWLEDGE_UNSUPPORTED_TYPE": "知识库不支持此文档类型。",
-    "KNOWLEDGE_NAME_TAKEN": "您已有同名知识库。"
+    "KNOWLEDGE_NAME_TAKEN": "您已有同名知识库。",
+    "BIO_EXECUTION_UNSUPPORTED": "当前平台无法执行该脚本。",
+    "BIO_FILE_SLOT_MISMATCH": "上传的文件与所需输入槽位不匹配。",
+    "BIO_IMPORT_EMPTY": "上传内容中没有可导入的脚本",
+    "BIO_SCRIPT_FOLDER_NOT_EMPTY": "生信脚本目录非空，无法删除。",
+    "BIO_SCRIPT_FOLDER_NOT_FOUND": "生信脚本目录不存在。",
+    "BIO_SCRIPT_NOT_FOUND": "生信脚本不存在。",
+    "BIO_SCRIPT_UNAVAILABLE": "生信脚本不可用（已停用、未校验或已过有效期）。",
+    "BIO_TASK_ACTIVE_EXISTS": "当前会话已有一个进行中的生信分析任务。",
+    "BIO_TASK_NOT_FOUND": "生信分析任务不存在。",
+    "BIO_TASK_STATE_INVALID": "生信分析任务当前状态不允许此操作。"
   },
   "nav": {
     "chat": "聊天",
@@ -192,7 +202,8 @@
     "security": "安全防护",
     "knowledgeBases": "知识库",
     "adminPlugins": "插件",
-    "skillPackages": "技能包"
+    "skillPackages": "技能包",
+    "adminBioScripts": "生信脚本库"
   },
   "skillPackages": {
     "title": "技能包",
@@ -1095,7 +1106,12 @@
     "acp_runner": "ACP 外部 Agent",
     "browser_use": "使用浏览器",
     "browser_control": "浏览器控制",
-    "send_file_to_user": "发送文件"
+    "send_file_to_user": "发送文件",
+    "bio_get_task": "查看分析任务",
+    "bio_plan_candidates": "规划分析路径",
+    "bio_present_candidates": "呈现候选路径",
+    "bio_request_files": "请求输入文件",
+    "bio_save_generated_code": "提交代码审批"
   },
   "chatUsage": {
     "latestRun": "最近一次请求",
@@ -2666,7 +2682,9 @@
     "versionUpdateAvailableReadonly": "当前 v{{current}}，新版本 v{{latest}} 可用",
     "newVersionBadge": "有新版本",
     "betaBadge": "Beta",
-    "betaTooltip": "当前版本正在内测"
+    "betaTooltip": "当前版本正在内测",
+    "themeBluDark": "碧海·夜间",
+    "themeBluLight": "碧海·白天"
   },
   "language": {
     "title": "语言",
@@ -4458,6 +4476,89 @@
     "terminal": {
       "title": "终端 AI+",
       "subtitle": "在浏览器中运行交互式 Shell 终端"
+    }
+  },
+  "adminBio": {
+    "advanced": "高级选项（通常无需填写）",
+    "clearFiles": "清空重选",
+    "colActions": "操作",
+    "colActive": "启用",
+    "colCategory": "分类",
+    "colName": "名称",
+    "colVerified": "已验证",
+    "colVersion": "版本",
+    "cost": "报价分数",
+    "deleteConfirm": "删除该脚本？",
+    "description": "描述",
+    "editScript": "编辑脚本",
+    "expired": "已过期",
+    "filesSelected": "已选 {{count}} 个脚本/文档",
+    "folderEmpty": "请先选择包含脚本的文件夹",
+    "folderName": "文件夹名称",
+    "importCreated": "已导入 {{count}} 个脚本",
+    "importResult": "导入结果",
+    "importSkipped": "跳过 {{count}} 个（重名或非脚本/文档文件）",
+    "importSubmit": "开始导入",
+    "inputs": "输入槽位（JSON）",
+    "libFolderHint": "脚本导入到该文件夹下；不存在则自动创建",
+    "libFolderName": "库文件夹",
+    "mdAlreadyFilled": "文档中的字段表单里已有值，未覆盖",
+    "mdFile": "说明文档（Markdown）",
+    "mdHint": "自动解析：## 名称/版本 等键值标题、基本信息表（Tool Name/估算机时/报价分数）、输入输出表（文件名+格式）",
+    "mdNothingParsed": "未从文档解析到元数据，请确认包含「## 名称:」「## 输入」等小节",
+    "mdParseFailed": "说明文档解析失败，请手动填写",
+    "mdParsed": "已从说明文档解析元数据",
+    "modeFolder": "文件夹批量导入",
+    "modeSingle": "单个脚本",
+    "nameHint": "留空则从说明文档或脚本文件名推导",
+    "newFolder": "新建文件夹",
+    "newScript": "上传脚本",
+    "noFolders": "暂无文件夹",
+    "outputs": "输出文件（JSON）",
+    "pickFile": "选择文件",
+    "pickFolder": "选择文件夹",
+    "runtimeMin": "预计耗时（分钟）",
+    "scriptDir": "脚本库目录",
+    "scriptDirHint": "选择包含 scripts/（.sh）和 reference/（.md）的目录，同名文件自动配对；示例数据目录会被忽略",
+    "scriptFile": "脚本文件",
+    "showAll": "显示全部",
+    "subtitle": "管理可供分析路径规划使用的脚本",
+    "title": "生信脚本库",
+    "verified": "已验证",
+    "verify": "验证",
+    "weight": "权重"
+  },
+  "bio": {
+    "codePreview": {
+      "approve": "批准并执行",
+      "hint": "请检查以下将要执行的代码。确认后将立即在本机运行。",
+      "originLibrary": "脚本库组装",
+      "originLlm": "模型生成",
+      "title": "代码审批"
+    },
+    "execution": {
+      "status": {
+        "completed": "已完成",
+        "executing": "执行中",
+        "failed": "失败"
+      },
+      "title": "执行日志",
+      "waiting": "等待日志输出…"
+    },
+    "panel": "生信分析任务",
+    "pathSelection": {
+      "chain": "路径 {{n}}",
+      "confirm": "确认所选路径",
+      "graphTitle": "分析流程",
+      "previewGraph": "预览流程图",
+      "runtime": "约 {{m}} 分钟",
+      "title": "选择分析路径",
+      "usedBefore": "之前用过"
+    },
+    "upload": {
+      "confirm": "确认上传",
+      "pick": "选择文件",
+      "title": "上传输入文件"
     }
   }
 }

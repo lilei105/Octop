@@ -42,6 +42,7 @@ import { octopThreadsApi } from "../../api/modules/octopThreads";
 import type { TokenUsage } from "../../api/types";
 import type { ChatAttachment } from "./hooks/useChat";
 import MessageList from "./components/MessageList";
+import BioTaskPanel from "../../components/bio/BioTaskPanel";
 import ChatInput, { type ChatInputHandle } from "./components/ChatInput";
 import WelcomeScreen from "./components/WelcomeScreen";
 import AgentNotReadyScreen from "./components/AgentNotReadyScreen";
@@ -829,6 +830,9 @@ function ChatPageInner() {
                     : undefined
                 }
               />
+            )}
+            {resolvedAgentId && activeThreadId && (
+              <BioTaskPanel agentId={resolvedAgentId} threadId={activeThreadId} />
             )}
           </div>
 

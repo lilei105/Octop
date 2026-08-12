@@ -288,6 +288,35 @@ function emitSlashAction(event: SlashActionEvent) {
   }
 }
 
+// BioFlow workflow events — the agent's bio_* tools emit custom chunks
+// ({bio: {kind, task_id, ...}}); panels listening here refetch task state
+// from REST (the single source of truth; custom chunks are not replayed
+// from history).
+export interface BioEvent {
+  sessionId: string;
+  kind: string;
+  taskId: string;
+}
+type BioEventListener = (event: BioEvent) => void;
+const bioEventListeners = new Set<BioEventListener>();
+
+export function onBioEvent(listener: BioEventListener): () => void {
+  bioEventListeners.add(listener);
+  return () => {
+    bioEventListeners.delete(listener);
+  };
+}
+
+function emitBioEvent(event: BioEvent) {
+  for (const fn of bioEventListeners) {
+    try {
+      fn(event);
+    } catch {
+      /* ignore */
+    }
+  }
+}
+
 // Session lifecycle events (e.g. deletion) for cross-module bridging.
 export type SessionEventKind = "sessionDeleted";
 export interface SessionEvent {
@@ -917,9 +946,20 @@ function handleHarnessChunk(
     case "state_snapshot":
       updateContextUsageFromChunk(state, chunk);
       break;
-    case "custom":
-      // Debug-only — phase 15 will add a debug toggle that surfaces these.
+    case "custom": {
+      // BioFlow workflow chunks carry {bio: {kind, task_id, ...}}; notify
+      // bio panels so they refetch the task from REST. Other custom chunks
+      // remain debug-only and are ignored.
+      const bio = (chunk.data as { bio?: { kind?: unknown; task_id?: unknown } } | undefined)?.bio;
+      if (sessionId && bio && typeof bio.task_id === "string") {
+        emitBioEvent({
+          sessionId,
+          kind: typeof bio.kind === "string" ? bio.kind : "",
+          taskId: bio.task_id,
+        });
+      }
       break;
+    }
   }
   notify(state);
 }

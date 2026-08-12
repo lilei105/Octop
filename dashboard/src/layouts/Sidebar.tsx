@@ -28,6 +28,7 @@ import {
   ChevronDown,
   Shield,
   PanelsTopLeft,
+  FlaskConical,
 } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { useUserRole } from "../hooks/useUserRole";
@@ -264,6 +265,14 @@ function buildNavSections(user: OctopUser | null): NavSection[] {
       path: "/admin/plugins",
       icon: <Puzzle size={iconSize} strokeWidth={iconStroke} />,
       labelKey: "nav.adminPlugins",
+    });
+  }
+  if (navAllowed(user, "admin-bio-scripts")) {
+    adminItems.push({
+      key: "admin-bio-scripts",
+      path: "/admin/bio-scripts",
+      icon: <FlaskConical size={iconSize} strokeWidth={iconStroke} />,
+      labelKey: "nav.adminBioScripts",
     });
   }
   if (navAllowed(user, "admin-security")) {

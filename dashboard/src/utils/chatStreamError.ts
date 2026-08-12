@@ -2,7 +2,7 @@
 
 import type { TFunction } from "i18next";
 
-const STREAM_ERROR_KEYS = [
+export const STREAM_ERROR_KEYS = [
   "stream_errors.stream_stall",
   "stream_errors.rate_limit",
   "stream_errors.auth",

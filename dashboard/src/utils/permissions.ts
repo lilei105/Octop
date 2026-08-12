@@ -23,6 +23,7 @@ export const PERM = {
   modelsPage: ["providers", "ollama_models", "onnx_models"],
   storage: ["storage_backends"],
   plugins: ["plugins"],
+  bioScripts: ["bio_scripts"],
   securityPage: ["security", "admin_console"],
   advancedPage: [
     "voice",
@@ -48,6 +49,7 @@ export const NAV_PERMISSIONS = {
   models: PERM.modelsPage,
   "admin-storage": PERM.storage,
   "admin-plugins": PERM.plugins,
+  "admin-bio-scripts": PERM.bioScripts,
   "admin-security": PERM.securityPage,
   "admin-advanced": PERM.advancedPage,
 } as const satisfies Record<string, PermissionKeys>;
@@ -142,6 +144,12 @@ export function pathPermissionKeys(pathname: string): PermissionKeys | null {
     pathname.startsWith("/plugins/")
   ) {
     return PERM.plugins;
+  }
+  if (
+    pathname.startsWith("/admin/bio-scripts") ||
+    pathname.startsWith("/bio-scripts/")
+  ) {
+    return PERM.bioScripts;
   }
   if (
     pathname.startsWith("/admin/security") ||

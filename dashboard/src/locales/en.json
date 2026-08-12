@@ -137,7 +137,17 @@
     "KNOWLEDGE_DOC_TOO_LARGE": "This document exceeds the 20 MB size limit.",
     "KNOWLEDGE_BASE_LIMIT": "You can create at most 20 knowledge bases.",
     "KNOWLEDGE_UNSUPPORTED_TYPE": "This document type is not supported for knowledge bases.",
-    "KNOWLEDGE_NAME_TAKEN": "You already have a knowledge base with this name."
+    "KNOWLEDGE_NAME_TAKEN": "You already have a knowledge base with this name.",
+    "BIO_EXECUTION_UNSUPPORTED": "This script cannot be executed on the current platform.",
+    "BIO_FILE_SLOT_MISMATCH": "Uploaded files do not match the required input slots.",
+    "BIO_IMPORT_EMPTY": "No importable scripts found in the upload",
+    "BIO_SCRIPT_FOLDER_NOT_EMPTY": "Bio script folder is not empty.",
+    "BIO_SCRIPT_FOLDER_NOT_FOUND": "Bio script folder not found.",
+    "BIO_SCRIPT_NOT_FOUND": "Bio script not found.",
+    "BIO_SCRIPT_UNAVAILABLE": "Bio script is unavailable (inactive, unverified, or expired).",
+    "BIO_TASK_ACTIVE_EXISTS": "An active bio analysis task already exists in this conversation.",
+    "BIO_TASK_NOT_FOUND": "Bio analysis task not found.",
+    "BIO_TASK_STATE_INVALID": "Bio analysis task is in an invalid state for this action."
   },
   "nav": {
     "chat": "Chat",
@@ -192,7 +202,8 @@
     "security": "Security",
     "adminPlugins": "Plugins",
     "skillPackages": "Skill Packages",
-    "knowledgeBases": "Knowledge Bases"
+    "knowledgeBases": "Knowledge Bases",
+    "adminBioScripts": "Bio Scripts"
   },
   "skillPackages": {
     "title": "Skill Packages",
@@ -1096,7 +1107,12 @@
     "acp_runner": "ACP external agent",
     "browser_use": "Use browser",
     "browser_control": "Browser control",
-    "send_file_to_user": "Send file"
+    "send_file_to_user": "Send file",
+    "bio_get_task": "Get analysis task",
+    "bio_plan_candidates": "Plan analysis paths",
+    "bio_present_candidates": "Present candidate paths",
+    "bio_request_files": "Request input files",
+    "bio_save_generated_code": "Submit code for approval"
   },
   "chatUsage": {
     "latestRun": "Latest run",
@@ -2670,7 +2686,9 @@
     "versionUpdateAvailableReadonly": "v{{current}} installed — v{{latest}} is available",
     "newVersionBadge": "New version",
     "betaBadge": "Beta",
-    "betaTooltip": "This version is in internal beta"
+    "betaTooltip": "This version is in internal beta",
+    "themeBluDark": "Ocean Blue · Dark",
+    "themeBluLight": "Ocean Blue · Light"
   },
   "language": {
     "title": "Language",
@@ -4314,6 +4332,89 @@
     "terminal": {
       "title": "Terminal AI+",
       "subtitle": "Run an interactive shell terminal in the browser"
+    }
+  },
+  "adminBio": {
+    "advanced": "Advanced (usually not needed)",
+    "clearFiles": "Clear",
+    "colActions": "Actions",
+    "colActive": "Active",
+    "colCategory": "Category",
+    "colName": "Name",
+    "colVerified": "Verified",
+    "colVersion": "Version",
+    "cost": "Cost score",
+    "deleteConfirm": "Delete this script?",
+    "description": "Description",
+    "editScript": "Edit script",
+    "expired": "Expired",
+    "filesSelected": "{{count}} scripts/docs selected",
+    "folderEmpty": "Please choose a folder containing scripts first",
+    "folderName": "Folder name",
+    "importCreated": "Imported {{count}} scripts",
+    "importResult": "Import result",
+    "importSkipped": "Skipped {{count}} (duplicate names or non script/doc files)",
+    "importSubmit": "Start import",
+    "inputs": "Input slots (JSON)",
+    "libFolderHint": "Scripts are imported under this folder; created when missing",
+    "libFolderName": "Library folder",
+    "mdAlreadyFilled": "Doc parsed, but all its fields already have values — nothing overwritten",
+    "mdFile": "Documentation (Markdown)",
+    "mdHint": "Auto-parsed: ## Name/Version headings, info tables (Tool Name/estimated runtime/cost), input/output tables (file name + format)",
+    "mdNothingParsed": "No metadata found in the doc. Expected sections like \"## Name:\" / \"## Inputs\"",
+    "mdParseFailed": "Failed to parse the Markdown doc — please fill in the fields manually",
+    "mdParsed": "Metadata parsed from the Markdown doc",
+    "modeFolder": "Folder batch import",
+    "modeSingle": "Single script",
+    "nameHint": "Leave empty to derive from the doc or script filename",
+    "newFolder": "New folder",
+    "newScript": "Upload script",
+    "noFolders": "No folders yet",
+    "outputs": "Output files (JSON)",
+    "pickFile": "Choose file",
+    "pickFolder": "Choose folder",
+    "runtimeMin": "Estimated runtime (min)",
+    "scriptDir": "Script library directory",
+    "scriptDirHint": "Pick a directory with scripts/ (.sh) and reference/ (.md); same-stem files are paired automatically; example-data dirs are ignored",
+    "scriptFile": "Script file",
+    "showAll": "Show all",
+    "subtitle": "Manage scripts available to analysis-path planning",
+    "title": "Bio Script Library",
+    "verified": "Verified",
+    "verify": "Verify",
+    "weight": "Weight"
+  },
+  "bio": {
+    "codePreview": {
+      "approve": "Approve and run",
+      "hint": "Review the code below. It will run locally immediately after approval.",
+      "originLibrary": "From script library",
+      "originLlm": "LLM-generated",
+      "title": "Code approval"
+    },
+    "execution": {
+      "status": {
+        "completed": "Completed",
+        "executing": "Running",
+        "failed": "Failed"
+      },
+      "title": "Execution logs",
+      "waiting": "Waiting for log output…"
+    },
+    "panel": "Bioinformatics analysis task",
+    "pathSelection": {
+      "chain": "Path {{n}}",
+      "confirm": "Confirm selected path",
+      "graphTitle": "Analysis flow",
+      "previewGraph": "Preview flow",
+      "runtime": "~{{m}} min",
+      "title": "Choose an analysis path",
+      "usedBefore": "Used before"
+    },
+    "upload": {
+      "confirm": "Confirm upload",
+      "pick": "Choose file",
+      "title": "Upload input files"
     }
   }
 }
