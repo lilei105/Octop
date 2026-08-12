@@ -1,0 +1,70 @@
+{
+  "id": "bioinformatics",
+  "label": {
+    "zh": "生信分析专家",
+    "en": "Bioinformatics Analyst"
+  },
+  "description": {
+    "zh": "生物信息分析助手：从脚本库规划分析路径，或在库无法满足时现场编写新脚本，支持文件上传、代码审批与本地执行。",
+    "en": "Bioinformatics assistant: plans analysis paths from the script library, or writes new scripts when the library falls short — with file upload, code approval, and local execution."
+  },
+  "welcome_message": {
+    "zh": "描述你的生信分析需求，我来规划分析路径",
+    "en": "Describe your analysis need and I'll plan the pipeline"
+  },
+  "icon_name": "activity",
+  "color": "#10b981",
+  "prompt_files": [
+    "SOUL.md"
+  ],
+  "quick_prompts": [
+    {
+      "title": {
+        "zh": "16S 扩增子分析",
+        "en": "16S amplicon analysis"
+      },
+      "description": {
+        "zh": "对 16S rRNA 测序数据做物种组成与多样性分析",
+        "en": "Taxonomic composition and diversity analysis for 16S rRNA data"
+      },
+      "prompt": {
+        "zh": "我有一批 16S rRNA 扩增子测序数据，请帮我规划分析流程。",
+        "en": "I have 16S rRNA amplicon sequencing data. Please plan an analysis pipeline for me."
+      },
+      "color": "#e8fdf5",
+      "icon_name": "activity"
+    },
+    {
+      "title": {
+        "zh": "RNA-seq 差异表达",
+        "en": "RNA-seq differential expression"
+      },
+      "description": {
+        "zh": "从原始读段到差异表达基因的完整流程",
+        "en": "Full pipeline from raw reads to differentially expressed genes"
+      },
+      "prompt": {
+        "zh": "请帮我规划一个 RNA-seq 差异表达分析流程，样本分为对照组和处理组。",
+        "en": "Please plan an RNA-seq differential expression pipeline with control and treatment groups."
+      },
+      "color": "#e8f4ff",
+      "icon_name": "git-branch"
+    },
+    {
+      "title": {
+        "zh": "查看脚本库",
+        "en": "Browse script library"
+      },
+      "description": {
+        "zh": "列出当前可用的生信分析脚本",
+        "en": "List the bioinformatics scripts currently available"
+      },
+      "prompt": {
+        "zh": "请列出脚本库中当前可用的分析脚本，按分类整理。",
+        "en": "List the available analysis scripts in the library, grouped by category."
+      },
+      "color": "#f1f5f9",
+      "icon_name": "list"
+    }
+  ]
+}

@@ -277,6 +277,7 @@ class AgentManager:
         self._expert_catalog = expert_catalog
         self._plugin_manager = plugin_manager
         self._cron_manager: CronManager | None = None
+        self._bio_service: Any | None = None
         self._team_processor: Any | None = None
         self._harness_manager: HarnessAgentManager | None = None
         self._lock = asyncio.Lock()
@@ -333,6 +334,15 @@ class AgentManager:
     def set_cron_manager(self, cron_manager: CronManager) -> None:
         """Attach the process-wide CronManager (must be set before boot())."""
         self._cron_manager = cron_manager
+
+    def set_bio_service(self, bio_service: Any | None) -> None:
+        """Attach the BioFlow workflow service (bioinformatics expert tools)."""
+        self._bio_service = bio_service
+
+    @property
+    def bio_service(self) -> Any | None:
+        """The BioFlow workflow service, when the integration is wired."""
+        return self._bio_service
 
     def set_team_processor(self, team_processor: Any | None) -> None:
         """Attach harness TeamProcessor (GlobalProcessor); required before boot()."""
@@ -1961,6 +1971,10 @@ class AgentManager:
         merged_tools.extend(plugin_tools)
         if self._harness_manager is not None:
             merged_tools.extend(self._harness_manager.team.team_tools())
+        if row.template_name == "bioinformatics" and self._bio_service is not None:
+            from octop.infra.bioinformatics.tools import build_bio_tools  # noqa: PLC0415
+
+            merged_tools.extend(build_bio_tools(self._bio_service))
 
         acp_section = cfg.get("acp")
         acp_raw: dict[str, Any] = acp_section if isinstance(acp_section, dict) else {}

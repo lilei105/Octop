@@ -9,6 +9,9 @@ from octop.infra.db.pool import DatabasePool
 from octop.infra.db.repos.agents import AgentRepo
 from octop.infra.db.repos.audit import AuditRepo
 from octop.infra.db.repos.backends import BackendRepo
+from octop.infra.db.repos.bio_analysis_tasks import BioTaskRepo
+from octop.infra.db.repos.bio_script_folders import BioScriptFolderRepo
+from octop.infra.db.repos.bio_scripts import BioScriptRepo
 from octop.infra.db.repos.care_push import CarePushRepo
 from octop.infra.db.repos.channels import ChannelRepo
 from octop.infra.db.repos.connectors import ConnectorRepo
@@ -53,6 +56,9 @@ class RepoBundle:
     care_push_repo: CarePushRepo
     proactive_care_config_repo: ProactiveCareConfigRepo
     sso_repo: SsoRepo
+    bio_script_folder_repo: BioScriptFolderRepo
+    bio_script_repo: BioScriptRepo
+    bio_task_repo: BioTaskRepo
 
     @classmethod
     def from_pool(cls, db: DatabasePool) -> RepoBundle:
@@ -78,6 +84,9 @@ class RepoBundle:
             care_push_repo=CarePushRepo(db),
             proactive_care_config_repo=ProactiveCareConfigRepo(db),
             sso_repo=SsoRepo(db),
+            bio_script_folder_repo=BioScriptFolderRepo(db),
+            bio_script_repo=BioScriptRepo(db),
+            bio_task_repo=BioTaskRepo(db),
         )
 
 
@@ -170,6 +179,18 @@ class SharedServices:
     @property
     def sso_repo(self) -> SsoRepo:
         return self.repos.sso_repo
+
+    @property
+    def bio_script_folder_repo(self) -> BioScriptFolderRepo:
+        return self.repos.bio_script_folder_repo
+
+    @property
+    def bio_script_repo(self) -> BioScriptRepo:
+        return self.repos.bio_script_repo
+
+    @property
+    def bio_task_repo(self) -> BioTaskRepo:
+        return self.repos.bio_task_repo
 
 
 def build_shared_services(

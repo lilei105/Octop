@@ -256,6 +256,30 @@ class OctopServer:
         registry.set_cron_manager(cron_mgr)
         registry.set_team_processor(gateway.processor)
 
+        from octop.infra.bioinformatics.library import BioScriptLibrary  # noqa: PLC0415
+        from octop.infra.bioinformatics.service import BioWorkflowService  # noqa: PLC0415
+
+        bio_service = BioWorkflowService(
+            task_repo=self.services.bio_task_repo,
+            library=BioScriptLibrary(
+                script_repo=self.services.bio_script_repo,
+                folder_repo=self.services.bio_script_folder_repo,
+                library_root=self.paths.bio_library_dir,
+            ),
+        )
+        bio_service.set_session_pusher(gateway.push_text_from_session)
+
+        from octop.infra.bioinformatics.executor import LocalShellExecutor  # noqa: PLC0415
+
+        bio_executor = LocalShellExecutor(
+            paths=self.paths,
+            service=bio_service,
+            thread_repo=self.services.repos.thread_repo,
+        )
+        bio_executor.recover_incomplete()
+        bio_service.set_executor(bio_executor)
+        registry.set_bio_service(bio_service)
+
         care_service = ProactiveCareService(
             gateway=gateway,
             care_push_repo=self.services.repos.care_push_repo,

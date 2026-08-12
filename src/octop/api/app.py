@@ -129,6 +129,8 @@ def build_app(server: OctopServer) -> FastAPI:
         auth,
         auth_oidc,
         backup,
+        bio,
+        bio_admin,
         browser,
         channels,
         chat,
@@ -206,6 +208,8 @@ def build_app(server: OctopServer) -> FastAPI:
             _RouterMount(tls_router, "/api/admin/tls", ["tls"]),
             _RouterMount(security_router, "/api/admin/security", ["security"]),
             _RouterMount(admin_storage_router, "/api/admin/storage-backends", ["admin"]),
+            _RouterMount(bio_admin.router, "/api/admin", ["admin"]),
+            _RouterMount(bio.router, "/api", ["bio"]),
             _RouterMount(
                 storage_backends_user_router, "/api/storage-backends", ["storage-backends"]
             ),

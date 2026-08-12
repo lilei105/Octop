@@ -74,6 +74,11 @@ class PathLayout:
         """Global knowledge base files: ``~/.octop/knowledge/``."""
         return self.root / "knowledge"
 
+    @property
+    def bio_library_dir(self) -> Path:
+        """Bio script library files: ``~/.octop/bio_library/``."""
+        return self.root / "bio_library"
+
     def agent_workspace(self, agent_id: str) -> Path:
         """Global agent workspace: ~/.octop/agents/<agent_id>/"""
         return self.agents_dir / agent_id

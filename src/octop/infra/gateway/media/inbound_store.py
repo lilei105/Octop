@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import asyncio
 import mimetypes
 import re
 import time
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -168,6 +170,56 @@ async def read_inbound_bytes(workspace: BackendWorkspace, path: str) -> bytes:
     return data
 
 
+async def write_inbound_stream(
+    workspace: BackendWorkspace,
+    chunks: AsyncIterator[bytes],
+    *,
+    filename: str,
+    media_type: str,
+    max_bytes: int,
+) -> InboundFile:
+    """Persist a large upload under ``inbound/`` without loading it into memory.
+
+    Uses ``workspace.resolve_path`` for a host-side streaming write — only
+    local/host-backed workspaces support this; remote backends raise
+    WORKSPACE_OP_UNSUPPORTED.
+    """
+    normalized_type = normalize_inbound_media_type(media_type)
+    display_name = sanitize_inbound_filename(filename)
+    if not Path(display_name).suffix:
+        display_name = f"{display_name}{inbound_extension(display_name, normalized_type)}"
+    stored_name = build_timestamped_inbound_name(display_name)
+    path = await _unique_inbound_path(workspace, stored_name)
+
+    try:
+        host_path = Path(workspace.resolve_path(path))
+    except Exception as exc:
+        raise OctopError(
+            ErrorCode.WORKSPACE_OP_UNSUPPORTED,
+            "large file upload requires a local workspace backend",
+        ) from exc
+
+    host_path.parent.mkdir(parents=True, exist_ok=True)
+    size = 0
+    with host_path.open("wb") as fh:
+        async for chunk in chunks:
+            size += len(chunk)
+            if size > max_bytes:
+                fh.close()
+                host_path.unlink(missing_ok=True)
+                raise OctopError(
+                    ErrorCode.SLASH_BAD_ARGS,
+                    f"file too large (max {max_bytes // (1024 * 1024)}MB)",
+                )
+            await asyncio.to_thread(fh.write, chunk)
+    return InboundFile(
+        path=path,
+        filename=display_name,
+        media_type=normalized_type,
+        size=size,
+    )
+
+
 __all__ = [
     "ALLOWED_INBOUND_MEDIA_TYPES",
     "InboundFile",
@@ -183,4 +235,5 @@ __all__ = [
     "validate_inbound_media_type",
     "validate_inbound_size",
     "write_inbound",
+    "write_inbound_stream",
 ]

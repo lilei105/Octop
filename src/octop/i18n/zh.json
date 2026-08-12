@@ -352,7 +352,17 @@
     "KNOWLEDGE_DOC_TOO_LARGE": "文档超过 20 MB 大小限制。",
     "KNOWLEDGE_BASE_LIMIT": "每个用户最多可创建 20 个知识库。",
     "KNOWLEDGE_UNSUPPORTED_TYPE": "知识库不支持此文档类型。",
-    "KNOWLEDGE_NAME_TAKEN": "您已有同名知识库。"
+    "KNOWLEDGE_NAME_TAKEN": "您已有同名知识库。",
+    "BIO_EXECUTION_UNSUPPORTED": "当前平台无法执行该脚本。",
+    "BIO_FILE_SLOT_MISMATCH": "上传的文件与所需输入槽位不匹配。",
+    "BIO_IMPORT_EMPTY": "上传内容中没有可导入的脚本。",
+    "BIO_SCRIPT_FOLDER_NOT_EMPTY": "生信脚本目录非空，无法删除。",
+    "BIO_SCRIPT_FOLDER_NOT_FOUND": "生信脚本目录不存在。",
+    "BIO_SCRIPT_NOT_FOUND": "生信脚本不存在。",
+    "BIO_SCRIPT_UNAVAILABLE": "生信脚本不可用（已停用、未校验或已过有效期）。",
+    "BIO_TASK_ACTIVE_EXISTS": "当前会话已有一个进行中的生信分析任务。",
+    "BIO_TASK_NOT_FOUND": "生信分析任务不存在。",
+    "BIO_TASK_STATE_INVALID": "生信分析任务当前状态不允许此操作。"
   },
   "desktop": {
     "install_log_deps": "正在安装 Python 依赖…",
@@ -457,7 +467,12 @@
     "acp_runner": "ACP 外部 Agent",
     "browser_use": "使用浏览器",
     "browser_control": "浏览器控制",
-    "send_file_to_user": "发送文件"
+    "send_file_to_user": "发送文件",
+    "bio_get_task": "查看分析任务",
+    "bio_plan_candidates": "规划分析路径",
+    "bio_present_candidates": "呈现候选路径",
+    "bio_request_files": "请求输入文件",
+    "bio_save_generated_code": "提交代码审批"
   },
   "skills": {
     "pdf": "PDF 处理",

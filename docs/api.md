@@ -337,9 +337,36 @@ endpoint (public, mounted directly in `api/app.py`).
 | `WS`/`POST`/`GET`/… | `/agents/{aid}/terminal` | owner | AI-assisted remote PTY |
 | `GET` | `/agents/{aid}/terminal/context` | owner | recent terminal context for the AI helper |
 | `WS`/`POST`/`GET`/… | `/browser/...` | user | remote Playwright sessions, screenshots, live streams |
-| `POST` | `/agents/{aid}/upload` | user | multipart upload → `{workspace}/inbound/` |
+| `POST` | `/agents/{aid}/upload` | user | multipart upload → `{workspace}/inbound/` (≤20MB) |
+| `POST` | `/agents/{aid}/upload-bio` | owner | chunked bio input upload (fastq/bam/vcf/… whitelist, ≤2GB) → `inbound/` |
 | `POST` | `/agents/{aid}/files/access-urls` | user | refresh inbound media URLs (signed) |
 | `GET`  | `/agents/{aid}/files/{path}` | owner | read an inbound file |
+
+## Bioinformatics (BioFlow)
+
+User-facing analysis-workflow confirmations (state machine in `BioWorkflowService`; the agent's `bio_*` tools drive it from chat):
+
+| Method | Path | Auth | Notes |
+|--------|------|------|-------|
+| `GET`  | `/agents/{aid}/bio/tasks?thread_id=` | owner | list tasks for a chat thread (UI state rebuild) |
+| `GET`  | `/agents/{aid}/bio/tasks/{task_id}` | owner | task detail |
+| `POST` | `/agents/{aid}/bio/tasks/{task_id}/confirm-path` | owner | pick a candidate chain `{candidate_id, candidate_data}`; 409 while a turn streams |
+| `POST` | `/agents/{aid}/bio/tasks/{task_id}/confirm-upload` | owner | confirm slot file mappings; triggers the code-generation turn |
+| `POST` | `/agents/{aid}/bio/tasks/{task_id}/start-execution` | owner | approve the previewed code and run it locally |
+| `GET`  | `/agents/{aid}/bio/tasks/{task_id}/execution-logs?offset=` | owner | incremental run.log `{logs, offset, completed, status, error_message}` |
+
+Script-library admin (`/api/admin/bio`):
+
+| Method | Path | Auth | Notes |
+|--------|------|------|-------|
+| `GET`/`POST` | `/admin/bio/script-folders` | admin | folder tree CRUD |
+| `PUT`/`DELETE` | `/admin/bio/script-folders/{id}` | admin | rename/sort; delete blocked when non-empty |
+| `GET`/`POST` | `/admin/bio/scripts` | admin | list (filter `?folder_id=`) / create (multipart script + md; blank fields back-filled from the md doc) |
+| `POST` | `/admin/bio/scripts/parse-md` | admin | preview the metadata a Markdown doc would yield (upload-form pre-fill) |
+| `POST` | `/admin/bio/scripts/import` | admin | bulk-import a directory upload: `files[]` with relative-path filenames (`Amplicon/scripts/x.sh` + `Amplicon/reference/x.md` paired by stem); folder auto-created, duplicate names skipped |
+| `GET`/`PUT`/`DELETE` | `/admin/bio/scripts/{id}` | admin | detail / update / delete |
+| `PATCH` | `/admin/bio/scripts/{id}/verify` | admin | mark verified (required for planning) |
+| `PATCH` | `/admin/bio/scripts/{id}/toggle` | admin | enable/disable |
 
 ## Updates, ollama, i18n, plugins, slash, preferences
 

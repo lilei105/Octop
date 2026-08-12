@@ -630,6 +630,14 @@ class GlobalProcessor:
                         )
                 chunk = enrich_tool_stream_chunk(chunk, locale)
                 yield chunk
+                if chunk.get("type") == "tool_result":
+                    from octop.infra.bioinformatics.stream import (  # noqa: PLC0415
+                        extract_bio_custom,
+                    )
+
+                    bio_payload = extract_bio_custom(chunk)
+                    if bio_payload is not None:
+                        yield {"type": "custom", "data": bio_payload}
             stream_ok = True
         except Exception as exc:
             await self._record_stream_error(user_id=user_id, agent_id=agent_id, exc=exc)

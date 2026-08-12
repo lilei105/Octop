@@ -2,17 +2,21 @@
 
 from __future__ import annotations
 
+from collections.abc import AsyncIterator
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from urllib.parse import quote
 
 from octop.infra.gateway.media.attachment_hints import is_image_media_type
-from octop.infra.gateway.media.inbound_store import InboundFile, write_inbound
+from octop.infra.gateway.media.inbound_store import InboundFile, write_inbound, write_inbound_stream
 
 if TYPE_CHECKING:
     from harness_agent.backends.workspace import BackendWorkspace
 
 MAX_ATTACHMENT_BYTES = 20 * 1024 * 1024
+# Bio input files (fastq/bam/vcf…) get a dedicated chunked path with a much
+# higher ceiling; regular chat attachments stay at MAX_ATTACHMENT_BYTES.
+MAX_BIO_ATTACHMENT_BYTES = 2 * 1024 * 1024 * 1024
 
 
 @dataclass(frozen=True)
@@ -65,5 +69,25 @@ async def save_attachment(
         data,
         filename=filename,
         media_type=media_type,
+    )
+    return _stored_from_inbound(inbound)
+
+
+async def save_bio_attachment(
+    workspace: BackendWorkspace,
+    *,
+    owner_id: int,
+    filename: str,
+    media_type: str,
+    chunks: AsyncIterator[bytes],
+) -> StoredAttachment:
+    """Stream a large bio input file into ``inbound/`` (chunked, up to 2GB)."""
+    del owner_id  # access control is JWT + agent scope at download time
+    inbound = await write_inbound_stream(
+        workspace,
+        chunks,
+        filename=filename,
+        media_type=media_type,
+        max_bytes=MAX_BIO_ATTACHMENT_BYTES,
     )
     return _stored_from_inbound(inbound)

@@ -113,6 +113,7 @@ PERMISSIONS: dict[str, PermissionDef] = {
         page_zh="插件",
         page_en="Plugins",
     ),
+    "bio_scripts": _p("bio_scripts", "admin", "生物脚本库", "Bio script library"),
     "security": _p(
         "security",
         "admin",
